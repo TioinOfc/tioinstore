@@ -1,5 +1,5 @@
 
-import { Diamond, Phone, User, LogIn } from "lucide-react";
+import { Phone, User, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface RechargeHeaderProps {
@@ -15,7 +15,7 @@ const RechargeHeader = ({ isLoggedIn, onAuthClick }: RechargeHeaderProps) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg shadow-cyan-400/50">
-                <Diamond className="text-white" size={24} />
+                <span className="text-white text-2xl">💎</span>
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white drop-shadow-lg">Tioin Store</h1>
@@ -28,7 +28,7 @@ const RechargeHeader = ({ isLoggedIn, onAuthClick }: RechargeHeaderProps) => {
               {isLoggedIn ? (
                 <div className="flex items-center gap-3">
                   <div className="bg-black/30 rounded-xl px-4 py-2 flex items-center gap-2 backdrop-blur-sm">
-                    <Diamond className="text-cyan-400" size={16} />
+                    <span className="text-cyan-400 text-lg">💎</span>
                     <span className="text-white font-semibold">1,247</span>
                   </div>
                   <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center">
@@ -55,17 +55,6 @@ const RechargeHeader = ({ isLoggedIn, onAuthClick }: RechargeHeaderProps) => {
                   </Button>
                 </div>
               )}
-              
-              {/* WhatsApp Help */}
-              <a 
-                href="https://wa.me/918118929332" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="bg-green-500 hover:bg-green-600 transition-colors rounded-xl px-3 py-2 flex items-center gap-2 text-white text-sm font-medium"
-              >
-                <Phone size={16} />
-                Help: 8118929332
-              </a>
             </div>
           </div>
         </div>

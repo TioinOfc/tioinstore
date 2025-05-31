@@ -1,11 +1,12 @@
 
 import { useState } from "react";
-import { Diamond } from "lucide-react";
 import RechargeHeader from "../components/RechargeHeader";
 import RechargeCard from "../components/RechargeCard";
 import PurchaseModal from "../components/PurchaseModal";
 import AuthModal from "../components/AuthModal";
 import BottomNavigation from "../components/BottomNavigation";
+import OrdersModal from "../components/OrdersModal";
+import ProfileModal from "../components/ProfileModal";
 import UPIPaymentModal from "../components/UPIPaymentModal";
 import { toast } from "@/hooks/use-toast";
 
@@ -13,12 +14,18 @@ const Index = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showOrdersModal, setShowOrdersModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
   const [showUPIModal, setShowUPIModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [diamondPackType, setDiamondPackType] = useState<'small' | 'normal'>('small');
 
-  const diamondPackages = [
+  const smallDiamondPackages = [
     { id: 1, diamonds: 5, originalPrice: 20, price: 15, popular: false },
     { id: 2, diamonds: 11, originalPrice: 30, price: 20, popular: false },
+  ];
+
+  const normalDiamondPackages = [
     { id: 3, diamonds: 22, originalPrice: 40, price: 35, popular: false },
     { id: 4, diamonds: 56, originalPrice: 100, price: 85, popular: true },
     { id: 5, diamonds: 112, originalPrice: 170, price: 160, popular: false },
@@ -26,6 +33,8 @@ const Index = () => {
     { id: 7, diamonds: 344, originalPrice: 599, price: 560, popular: false },
     { id: 8, diamonds: 706, originalPrice: 1199, price: 1120, popular: false },
   ];
+
+  const currentDiamondPackages = diamondPackType === 'small' ? smallDiamondPackages : normalDiamondPackages;
 
   const passes = [
     {
@@ -72,6 +81,14 @@ const Index = () => {
     });
   };
 
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+    });
+  };
+
   const confirmPurchase = () => {
     setShowPurchaseModal(false);
     setShowUPIModal(true);
@@ -94,20 +111,46 @@ const Index = () => {
           onAuthClick={() => setShowAuthModal(true)}
         />
         
-        <div className="container mx-auto px-4 py-8 pb-24">
+        <div className="container mx-auto px-4 py-8 pb-32">
           {/* Diamond Packages Section */}
           <section className="mb-12">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-white mb-2 flex items-center justify-center gap-2">
-                <Diamond className="text-cyan-400 animate-pulse" size={32} />
+                <span className="text-cyan-400 animate-pulse text-4xl">💎</span>
                 Diamond Packages
               </h2>
               <p className="text-gray-200">Choose your diamond package and dominate the battlefield!</p>
             </div>
             
-            {/* Grid layout for diamond packages like the reference */}
+            {/* Diamond Pack Type Selector */}
+            <div className="flex justify-center mb-6">
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-1 border border-cyan-500/30">
+                <button
+                  onClick={() => setDiamondPackType('small')}
+                  className={`px-6 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    diamondPackType === 'small'
+                      ? 'bg-cyan-500 text-white'
+                      : 'text-gray-300 hover:text-white'
+                  }`}
+                >
+                  Small Diamond Pack
+                </button>
+                <button
+                  onClick={() => setDiamondPackType('normal')}
+                  className={`px-6 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    diamondPackType === 'normal'
+                      ? 'bg-cyan-500 text-white'
+                      : 'text-gray-300 hover:text-white'
+                  }`}
+                >
+                  Normal Diamond Pack
+                </button>
+              </div>
+            </div>
+            
+            {/* Grid layout for diamond packages */}
             <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
-              {diamondPackages.map((pkg) => (
+              {currentDiamondPackages.map((pkg) => (
                 <div 
                   key={pkg.id}
                   className={`relative bg-gradient-to-br from-gray-800/90 to-gray-700/90 backdrop-blur-sm rounded-xl p-4 border transition-all duration-300 hover:transform hover:scale-105 cursor-pointer ${
@@ -127,7 +170,7 @@ const Index = () => {
                   
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
-                      <Diamond className="text-white" size={24} />
+                      <span className="text-white text-2xl">💎</span>
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-white">{pkg.diamonds} Diamonds</h3>
@@ -220,12 +263,32 @@ const Index = () => {
         </div>
       </div>
 
-      <BottomNavigation />
+      <BottomNavigation 
+        isLoggedIn={isLoggedIn}
+        onOrdersClick={() => setShowOrdersModal(true)}
+        onProfileClick={() => setShowProfileModal(true)}
+      />
 
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
         onLogin={handleLogin}
+      />
+
+      <OrdersModal
+        isOpen={showOrdersModal}
+        onClose={() => setShowOrdersModal(false)}
+        isLoggedIn={isLoggedIn}
+        onAuthClick={() => setShowAuthModal(true)}
+      />
+
+      <ProfileModal
+        isOpen={showProfileModal}
+        onClose={() => setShowProfileModal(false)}
+        isLoggedIn={isLoggedIn}
+        onAuthClick={() => setShowAuthModal(true)}
+        onLogout={handleLogout}
+        onOrdersClick={() => setShowOrdersModal(true)}
       />
 
       <PurchaseModal
