@@ -15,7 +15,7 @@ const PurchaseModal = ({ isOpen, onClose, onConfirm, item }: PurchaseModalProps)
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-gradient-to-br from-purple-900 to-blue-900 border-purple-500/30 text-white">
+      <DialogContent className="bg-gradient-to-br from-blue-900 to-cyan-900 border-cyan-500/30 text-white">
         <DialogHeader>
           <DialogTitle className="text-xl text-center flex items-center justify-center gap-2">
             <Diamond className="text-cyan-400" size={24} />
@@ -26,7 +26,7 @@ const PurchaseModal = ({ isOpen, onClose, onConfirm, item }: PurchaseModalProps)
           </DialogDescription>
         </DialogHeader>
         
-        <div className="bg-black/20 rounded-xl p-4 my-4">
+        <div className="bg-black/20 rounded-xl p-4 my-4 border border-cyan-500/20">
           <div className="text-center">
             <div className="text-2xl mb-2">
               {item.diamonds ? '💎' : item.image}
@@ -41,7 +41,7 @@ const PurchaseModal = ({ isOpen, onClose, onConfirm, item }: PurchaseModalProps)
               <p className="text-gray-300 text-sm mb-2">{item.description}</p>
             )}
             <div className="text-2xl font-bold text-cyan-400">
-              ${item.price}
+              ₹{item.price}
             </div>
           </div>
         </div>

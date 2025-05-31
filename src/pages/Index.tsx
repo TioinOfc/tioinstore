@@ -11,14 +11,14 @@ const Index = () => {
   const [showModal, setShowModal] = useState(false);
 
   const diamondPackages = [
-    { id: 1, diamonds: 86, bonus: 0, price: 1.99, popular: false },
-    { id: 2, diamonds: 172, bonus: 0, price: 3.99, popular: false },
-    { id: 3, diamonds: 344, bonus: 31, price: 7.99, popular: false },
-    { id: 4, diamonds: 706, bonus: 74, price: 15.99, popular: true },
-    { id: 5, diamonds: 1412, bonus: 176, price: 31.99, popular: false },
-    { id: 6, diamonds: 2195, bonus: 293, price: 49.99, popular: false },
-    { id: 7, diamonds: 3688, bonus: 532, price: 79.99, popular: false },
-    { id: 8, diamonds: 7375, bonus: 1225, price: 159.99, popular: false },
+    { id: 1, diamonds: 86, bonus: 0, price: 149, popular: false },
+    { id: 2, diamonds: 172, bonus: 0, price: 299, popular: false },
+    { id: 3, diamonds: 344, bonus: 31, price: 599, popular: false },
+    { id: 4, diamonds: 706, bonus: 74, price: 1199, popular: true },
+    { id: 5, diamonds: 1412, bonus: 176, price: 2399, popular: false },
+    { id: 6, diamonds: 2195, bonus: 293, price: 3749, popular: false },
+    { id: 7, diamonds: 3688, bonus: 532, price: 5999, popular: false },
+    { id: 8, diamonds: 7375, bonus: 1225, price: 11999, popular: false },
   ];
 
   const passes = [
@@ -26,7 +26,7 @@ const Index = () => {
       id: 'weekly',
       name: 'Weekly Diamond Pass',
       description: 'Get diamonds daily for 7 days',
-      price: 4.99,
+      price: 374,
       benefits: ['10 Diamonds daily', 'Exclusive avatar border', '7-day duration'],
       image: '💎'
     },
@@ -34,7 +34,7 @@ const Index = () => {
       id: 'starlight',
       name: 'Starlight Member',
       description: 'Premium monthly membership',
-      price: 9.99,
+      price: 749,
       benefits: ['Exclusive skins', 'Daily rewards', 'Special privileges'],
       image: '⭐'
     },
@@ -42,7 +42,7 @@ const Index = () => {
       id: 'starlight-premium',
       name: 'Starlight Premium',
       description: 'Ultimate monthly experience',
-      price: 19.99,
+      price: 1499,
       benefits: ['All Starlight benefits', 'Exclusive emotes', 'Premium rewards'],
       image: '👑'
     }
@@ -65,13 +65,13 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-cyan-900 to-blue-800">
       {/* Animated background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-20 h-20 bg-yellow-400 rounded-full opacity-20 animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-pink-400 rounded-full opacity-20 animate-bounce"></div>
-        <div className="absolute bottom-40 left-20 w-12 h-12 bg-cyan-400 rounded-full opacity-20 animate-ping"></div>
-        <div className="absolute bottom-20 right-40 w-24 h-24 bg-purple-400 rounded-full opacity-20 animate-pulse"></div>
+        <div className="absolute top-20 left-10 w-20 h-20 bg-cyan-400 rounded-full opacity-20 animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-16 h-16 bg-blue-400 rounded-full opacity-20 animate-bounce"></div>
+        <div className="absolute bottom-40 left-20 w-12 h-12 bg-cyan-300 rounded-full opacity-20 animate-ping"></div>
+        <div className="absolute bottom-20 right-40 w-24 h-24 bg-blue-500 rounded-full opacity-20 animate-pulse"></div>
       </div>
 
       <div className="relative z-10">
@@ -114,7 +114,7 @@ const Index = () => {
               {passes.map((pass) => (
                 <div
                   key={pass.id}
-                  className="bg-gradient-to-br from-purple-800/50 to-blue-800/50 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/30 hover:border-cyan-400/50 transition-all duration-300 hover:transform hover:scale-105 cursor-pointer"
+                  className="bg-gradient-to-br from-blue-800/50 to-cyan-800/50 backdrop-blur-lg rounded-2xl p-6 border border-cyan-500/30 hover:border-cyan-400/70 transition-all duration-300 hover:transform hover:scale-105 cursor-pointer hover:shadow-lg hover:shadow-cyan-500/25"
                   onClick={() => handlePurchase(pass)}
                 >
                   <div className="text-center mb-4">
@@ -133,7 +133,7 @@ const Index = () => {
                   </div>
                   
                   <button className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/25">
-                    ${pass.price}
+                    ₹{pass.price}
                   </button>
                 </div>
               ))}
