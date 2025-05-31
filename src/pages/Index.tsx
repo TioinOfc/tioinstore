@@ -17,14 +17,14 @@ const Index = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const diamondPackages = [
-    { id: 1, diamonds: 86, bonus: 0, price: 149, popular: false },
-    { id: 2, diamonds: 172, bonus: 0, price: 299, popular: false },
-    { id: 3, diamonds: 344, bonus: 31, price: 599, popular: false },
-    { id: 4, diamonds: 706, bonus: 74, price: 1199, popular: true },
-    { id: 5, diamonds: 1412, bonus: 176, price: 2399, popular: false },
-    { id: 6, diamonds: 2195, bonus: 293, price: 3749, popular: false },
-    { id: 7, diamonds: 3688, bonus: 532, price: 5999, popular: false },
-    { id: 8, diamonds: 7375, bonus: 1225, price: 11999, popular: false },
+    { id: 1, diamonds: 5, originalPrice: 20, price: 15, popular: false },
+    { id: 2, diamonds: 11, originalPrice: 30, price: 20, popular: false },
+    { id: 3, diamonds: 22, originalPrice: 40, price: 35, popular: false },
+    { id: 4, diamonds: 56, originalPrice: 100, price: 85, popular: true },
+    { id: 5, diamonds: 112, originalPrice: 170, price: 160, popular: false },
+    { id: 6, diamonds: 172, originalPrice: 299, price: 280, popular: false },
+    { id: 7, diamonds: 344, originalPrice: 599, price: 560, popular: false },
+    { id: 8, diamonds: 706, originalPrice: 1199, price: 1120, popular: false },
   ];
 
   const passes = [
@@ -78,23 +78,15 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-cyan-900 to-blue-800 relative">
-      {/* Enhanced background with better visibility */}
+    <div className="min-h-screen relative">
+      {/* Background with 80% visibility */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40"
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('/lovable-uploads/e5d9771d-e17e-44f4-b60e-e893aec35365.png')`
+          backgroundImage: `url('/lovable-uploads/a0ca66ab-c649-41a0-9151-5862d13d943b.png')`
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/70 via-cyan-900/70 to-blue-800/70" />
-
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-20 h-20 bg-cyan-400 rounded-full opacity-20 animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-blue-400 rounded-full opacity-20 animate-bounce"></div>
-        <div className="absolute bottom-40 left-20 w-12 h-12 bg-cyan-300 rounded-full opacity-20 animate-ping"></div>
-        <div className="absolute bottom-20 right-40 w-24 h-24 bg-blue-500 rounded-full opacity-20 animate-pulse"></div>
-      </div>
+      <div className="fixed inset-0 bg-blue-900/20" />
 
       <div className="relative z-10">
         <RechargeHeader 
@@ -110,25 +102,50 @@ const Index = () => {
                 <Diamond className="text-cyan-400 animate-pulse" size={32} />
                 Diamond Packages
               </h2>
-              <p className="text-gray-300">Choose your diamond package and dominate the battlefield!</p>
+              <p className="text-gray-200">Choose your diamond package and dominate the battlefield!</p>
             </div>
             
-            {/* Horizontal scrollable diamond grid */}
-            <div className="overflow-x-auto pb-4">
-              <div className="flex gap-4 min-w-max">
-                {diamondPackages.map((pkg) => (
-                  <div key={pkg.id} className="flex-shrink-0 w-64">
-                    <RechargeCard
-                      title={`${pkg.diamonds}${pkg.bonus > 0 ? ` +${pkg.bonus}` : ''}`}
-                      subtitle="Diamonds"
-                      price={pkg.price}
-                      popular={pkg.popular}
-                      icon="💎"
-                      onClick={() => handlePurchase(pkg)}
-                    />
+            {/* Grid layout for diamond packages like the reference */}
+            <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
+              {diamondPackages.map((pkg) => (
+                <div 
+                  key={pkg.id}
+                  className={`relative bg-gradient-to-br from-gray-800/90 to-gray-700/90 backdrop-blur-sm rounded-xl p-4 border transition-all duration-300 hover:transform hover:scale-105 cursor-pointer ${
+                    pkg.popular 
+                      ? 'border-cyan-400 shadow-lg shadow-cyan-400/25' 
+                      : 'border-gray-600 hover:border-cyan-400/50'
+                  }`}
+                  onClick={() => handlePurchase(pkg)}
+                >
+                  {pkg.popular && (
+                    <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
+                      <div className="bg-gradient-to-r from-cyan-400 to-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                        POPULAR
+                      </div>
+                    </div>
+                  )}
+                  
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
+                      <Diamond className="text-white" size={24} />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-white">{pkg.diamonds} Diamonds</h3>
+                    </div>
                   </div>
-                ))}
-              </div>
+
+                  <div className="bg-gray-600/50 rounded-lg px-3 py-1 mb-3 text-center">
+                    <span className="text-gray-300 text-sm">Discount</span>
+                  </div>
+                  
+                  <div className="bg-white rounded-lg p-3 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="text-red-500 line-through text-sm">₹{pkg.originalPrice}</span>
+                      <span className="text-black font-bold text-lg">₹{pkg.price}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
 
@@ -136,14 +153,14 @@ const Index = () => {
           <section>
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-white mb-2">Premium Memberships</h2>
-              <p className="text-gray-300">Unlock exclusive rewards and privileges!</p>
+              <p className="text-gray-200">Unlock exclusive rewards and privileges!</p>
             </div>
             
             <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
               {passes.map((pass) => (
                 <div
                   key={pass.id}
-                  className="bg-gradient-to-br from-blue-800/50 to-cyan-800/50 backdrop-blur-lg rounded-2xl p-6 border border-cyan-500/30 hover:border-cyan-400/70 transition-all duration-300 hover:transform hover:scale-105 cursor-pointer hover:shadow-lg hover:shadow-cyan-500/25"
+                  className="bg-gradient-to-br from-gray-800/90 to-gray-700/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-600 hover:border-cyan-400/70 transition-all duration-300 hover:transform hover:scale-105 cursor-pointer hover:shadow-lg hover:shadow-cyan-500/25"
                   onClick={() => handlePurchase(pass)}
                 >
                   <div className="text-center mb-4">
@@ -166,6 +183,38 @@ const Index = () => {
                   </button>
                 </div>
               ))}
+            </div>
+          </section>
+
+          {/* Order Information Section */}
+          <section className="mt-12">
+            <div className="bg-gradient-to-br from-gray-800/90 to-gray-700/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-600 max-w-2xl mx-auto">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                  <span className="text-white text-sm">🎮</span>
+                </div>
+                <h3 className="text-xl font-bold text-white">Order Information</h3>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-gray-300 text-sm mb-2">Enter User ID</label>
+                  <input 
+                    type="text" 
+                    placeholder="Enter User ID"
+                    className="w-full bg-white rounded-lg px-4 py-3 text-gray-800 placeholder-gray-500"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-gray-300 text-sm mb-2">Enter Server ID</label>
+                  <input 
+                    type="text" 
+                    placeholder="Enter Server ID"
+                    className="w-full bg-white rounded-lg px-4 py-3 text-gray-800 placeholder-gray-500"
+                  />
+                </div>
+              </div>
             </div>
           </section>
         </div>

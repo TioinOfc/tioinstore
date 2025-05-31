@@ -9,13 +9,8 @@ interface RechargeHeaderProps {
 
 const RechargeHeader = ({ isLoggedIn, onAuthClick }: RechargeHeaderProps) => {
   return (
-    <div 
-      className="relative bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage: `linear-gradient(rgba(30, 58, 138, 0.8), rgba(59, 130, 246, 0.8)), url('/lovable-uploads/e5d9771d-e17e-44f4-b60e-e893aec35365.png')`
-      }}
-    >
-      <header className="backdrop-blur-sm border-b border-cyan-400/30">
+    <div className="relative bg-black/30 backdrop-blur-sm">
+      <header className="border-b border-cyan-400/30">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
