@@ -4,11 +4,17 @@ import { Diamond } from "lucide-react";
 import RechargeHeader from "../components/RechargeHeader";
 import RechargeCard from "../components/RechargeCard";
 import PurchaseModal from "../components/PurchaseModal";
+import AuthModal from "../components/AuthModal";
+import BottomNavigation from "../components/BottomNavigation";
+import UPIPaymentModal from "../components/UPIPaymentModal";
 import { toast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [selectedItem, setSelectedItem] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showUPIModal, setShowUPIModal] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const diamondPackages = [
     { id: 1, diamonds: 86, bonus: 0, price: 149, popular: false },
@@ -49,25 +55,41 @@ const Index = () => {
   ];
 
   const handlePurchase = (item) => {
+    if (!isLoggedIn) {
+      setShowAuthModal(true);
+      setSelectedItem(item);
+      return;
+    }
     setSelectedItem(item);
-    setShowModal(true);
+    setShowPurchaseModal(true);
+  };
+
+  const handleLogin = (credentials) => {
+    setIsLoggedIn(true);
+    toast({
+      title: "Login Successful!",
+      description: "Welcome to Tioin Store!",
+    });
   };
 
   const confirmPurchase = () => {
-    toast({
-      title: "Purchase Successful!",
-      description: selectedItem.diamonds 
-        ? `${selectedItem.diamonds} diamonds have been added to your account!`
-        : `${selectedItem.name} activated successfully!`,
-    });
-    setShowModal(false);
-    setSelectedItem(null);
+    setShowPurchaseModal(false);
+    setShowUPIModal(true);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-cyan-900 to-blue-800">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-cyan-900 to-blue-800 relative">
+      {/* Enhanced background with better visibility */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40"
+        style={{
+          backgroundImage: `url('/lovable-uploads/e5d9771d-e17e-44f4-b60e-e893aec35365.png')`
+        }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/70 via-cyan-900/70 to-blue-800/70" />
+
       {/* Animated background elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-20 h-20 bg-cyan-400 rounded-full opacity-20 animate-pulse"></div>
         <div className="absolute top-40 right-20 w-16 h-16 bg-blue-400 rounded-full opacity-20 animate-bounce"></div>
         <div className="absolute bottom-40 left-20 w-12 h-12 bg-cyan-300 rounded-full opacity-20 animate-ping"></div>
@@ -75,9 +97,12 @@ const Index = () => {
       </div>
 
       <div className="relative z-10">
-        <RechargeHeader />
+        <RechargeHeader 
+          isLoggedIn={isLoggedIn} 
+          onAuthClick={() => setShowAuthModal(true)}
+        />
         
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 pb-24">
           {/* Diamond Packages Section */}
           <section className="mb-12">
             <div className="text-center mb-8">
@@ -88,18 +113,22 @@ const Index = () => {
               <p className="text-gray-300">Choose your diamond package and dominate the battlefield!</p>
             </div>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {diamondPackages.map((pkg) => (
-                <RechargeCard
-                  key={pkg.id}
-                  title={`${pkg.diamonds}${pkg.bonus > 0 ? ` +${pkg.bonus}` : ''}`}
-                  subtitle="Diamonds"
-                  price={pkg.price}
-                  popular={pkg.popular}
-                  icon="💎"
-                  onClick={() => handlePurchase(pkg)}
-                />
-              ))}
+            {/* Horizontal scrollable diamond grid */}
+            <div className="overflow-x-auto pb-4">
+              <div className="flex gap-4 min-w-max">
+                {diamondPackages.map((pkg) => (
+                  <div key={pkg.id} className="flex-shrink-0 w-64">
+                    <RechargeCard
+                      title={`${pkg.diamonds}${pkg.bonus > 0 ? ` +${pkg.bonus}` : ''}`}
+                      subtitle="Diamonds"
+                      price={pkg.price}
+                      popular={pkg.popular}
+                      icon="💎"
+                      onClick={() => handlePurchase(pkg)}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
 
@@ -142,10 +171,24 @@ const Index = () => {
         </div>
       </div>
 
+      <BottomNavigation />
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onLogin={handleLogin}
+      />
+
       <PurchaseModal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
+        isOpen={showPurchaseModal}
+        onClose={() => setShowPurchaseModal(false)}
         onConfirm={confirmPurchase}
+        item={selectedItem}
+      />
+
+      <UPIPaymentModal
+        isOpen={showUPIModal}
+        onClose={() => setShowUPIModal(false)}
         item={selectedItem}
       />
     </div>
